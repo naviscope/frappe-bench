@@ -1,0 +1,4 @@
+*.pyc
+src/*
+sites/*
+env/*
