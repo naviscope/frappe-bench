@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 python2.7 ./scripts/virtualenv.py env
 
 SITES_PATH='sites'
@@ -29,7 +31,7 @@ if [[ $CMD = "single" ]]
 then
     . ./env/bin/activate
     frappe --install $DB_NAME $SINGLE_SITE_NAME --sites_path $SITES_PATH
-    cat apps.txt | xargs -n1 -I {} frappe --install_app {} $SINGLE_SITE_NAME --sites_path $SITES_PATH
+    cat sites/apps.txt | xargs -n1 -I {} frappe --install_app {} $SINGLE_SITE_NAME --sites_path $SITES_PATH
     frappe --build  $SINGLE_SITE_NAME --sites_path $SITES_PATH
     echo please run "\``which frappe` --serve $SINGLE_SITE_NAME --sites_path `pwd`/$SITES_PATH\`" to start erpnext
     deactivate
