@@ -1,4 +1,4 @@
-## ERPNext bench
+## Frappe bench
 
 This repository helps you setup an isolated environment (bench) to run and
 develop ERPNext. A virtualenv is installed in the env directory. You can
@@ -15,12 +15,13 @@ sudo apt-get install python-dev build-essential python-mysqldb git memcached ntp
 #### Usage
 
 ```
-git clone https://github.com/frappe/erpnext-bench
-cd erpnext-bench
+git clone https://github.com/frappe/frappe-bench
+cd frappe-bench
 ./scripts/install.sh single [sitename [dbname]]
 ```
 
 ### Updating software
+
 Not yet automated but you can run
 ```
 cd src/frappe && git pull && cd -
