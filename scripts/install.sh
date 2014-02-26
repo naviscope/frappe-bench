@@ -27,50 +27,49 @@ fi
 
 if [[ $CMD = "single" ]]
 then
-	. ./env/bin/activate
-	frappe --install $DB_NAME $SINGLE_SITE_NAME --sites_path $SITES_PATH
-	frappe --install_app erpnext $SINGLE_SITE_NAME --sites_path $SITES_PATH
-	frappe --install_app shopping_cart $SINGLE_SITE_NAME --sites_path $SITES_PATH
-	frappe --build  $SINGLE_SITE_NAME --sites_path $SITES_PATH
-	echo please run "\``which frappe` --serve $SINGLE_SITE_NAME --sites_path `pwd`/$SITES_PATH\`" to start erpnext
-	deactivate
+    . ./env/bin/activate
+    frappe --install $DB_NAME $SINGLE_SITE_NAME --sites_path $SITES_PATH
+    cat apps.txt | xargs -n1 -I {} frappe --install_app {} $SINGLE_SITE_NAME --sites_path $SITES_PATH
+    frappe --build  $SINGLE_SITE_NAME --sites_path $SITES_PATH
+    echo please run "\``which frappe` --serve $SINGLE_SITE_NAME --sites_path `pwd`/$SITES_PATH\`" to start erpnext
+    deactivate
 fi
 
 
 if [[ $CMD = "migrate_3_to_4" ]]
 then
-	if [[ -z $SITE_PATH ]]
-	then 
-		echo 'Please provide site path'
-		exit 1
-	fi
+    if [[ -z $SITE_PATH ]]
+    then
+        echo 'Please provide site path'
+        exit 1
+    fi
 
-	site=`basename $SITE_PATH`
+    site=`basename $SITE_PATH`
 
-	if [[ -d $SITES_PATH/$site ]]
-	then 
-		echo site $site already exists
-		exit 1
-	fi
+    if [[ -d $SITES_PATH/$site ]]
+    then
+        echo site $site already exists
+        exit 1
+    fi
 
-	mkdir $SITES_PATH/$site
+    mkdir $SITES_PATH/$site
 
-	. ./env/bin/activate
-	if [[ -d $SITE_PATH/public ]]
-	then
-		cp -r $SITE_PATH/public $SITES_PATH/$site/public
-	fi
+    . ./env/bin/activate
+    if [[ -d $SITE_PATH/public ]]
+    then
+        cp -r $SITE_PATH/public $SITES_PATH/$site/public
+    fi
 
-	if [[ -f $SITE_PATH/conf.py ]]
-	then
-		python scripts/module_to_json.py $SITE_PATH/conf.py > $SITES_PATH/$site/site_config.json
-	fi
+    if [[ -f $SITE_PATH/conf.py ]]
+    then
+        python scripts/module_to_json.py $SITE_PATH/conf.py > $SITES_PATH/$site/site_config.json
+    fi
 
-	if [[ -f $SITE_PATH/site_config.json ]]
-	then
-		cp $SITE_PATH/site_config.json $SITES_PATH/$site/site_config.json
-	fi
+    if [[ -f $SITE_PATH/site_config.json ]]
+    then
+        cp $SITE_PATH/site_config.json $SITES_PATH/$site/site_config.json
+    fi
 
-	python scripts/3to4.py $site 
-	echo please run "`which frappe` --serve $site --sites_path `pwd`/$SITES_PATH" to start erpnext
+    python scripts/3to4.py $site
+    echo please run "`which frappe` --serve $site --sites_path `pwd`/$SITES_PATH" to start erpnext
 fi

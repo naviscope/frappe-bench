@@ -24,6 +24,7 @@ from distutils.util import strtobool
 import struct
 import subprocess
 import tarfile
+import json
 
 if sys.version_info < (2, 7):
     print('ERROR: %s' % sys.exc_info()[1])
@@ -2336,24 +2337,25 @@ def mach_o_change(path, what, value):
     do_file(open(path, 'r+b'))
 
 def after_install(options, home_dir):
-	home_dir = os.path.abspath(home_dir)
-	mkdir('sites')
-	mkdir('src')
-	os.chdir('src')
-	# subprocess.check_output('/'.join([home_dir, 'bin', 'pip install --no-index --find-links=../virtualenv_support lxml']), shell=True)
-	if not os.path.exists('frappe'):
-		subprocess.check_output('git clone http://github.com/frappe/frappe/', shell=True)
-	if not os.path.exists('erpnext'):
-		subprocess.check_output('git clone http://github.com/frappe/erpnext/', shell=True)
-	if not os.path.exists('shopping-cart'):
-		subprocess.check_output('git clone http://github.com/frappe/shopping-cart/', shell=True)
+    home_dir = os.path.abspath(home_dir)
+    mkdir('sites')
+    mkdir('src')
+    with open('standard_apps.json', 'r') as f:
+        apps = json.load(f)
+    app_names = apps.keys()
+    os.chdir('src')
+    # subprocess.check_output('/'.join([home_dir, 'bin', 'pip install --no-index --find-links=../virtualenv_support lxml']), shell=True)
+    if not os.path.exists('frappe'):
+        subprocess.check_output('git clone http://github.com/frappe/frappe/', shell=True)
+    subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e frappe/ ']), shell=True)
 
-	subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e frappe/ ']), shell=True)
-	subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e erpnext/']), shell=True)
-	subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e shopping-cart/']), shell=True)
-	os.chdir('..')
-	with open('sites/apps.txt', 'w') as f:
-		f.write('erpnext\nshopping_cart')
+    for app_name, app_url in apps.iteritems():
+        if not os.path.exists(app_name):
+            subprocess.check_output('git clone {app_url} {app_name}'.format(app_url=app_url, app_name=app_name), shell=True)
+        subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e {}/'.format(app_name)]), shell=True)
+    os.chdir('..')
+    with open('sites/apps.txt', 'w') as f:
+        f.write('\n'.join(app_names))
 
 if __name__ == '__main__':
     main()
