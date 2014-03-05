@@ -34,6 +34,7 @@ then
     cat sites/apps.txt | xargs -n1 -I {} frappe --install_app {} $SINGLE_SITE_NAME --sites_path $SITES_PATH
     frappe --build  $SINGLE_SITE_NAME --sites_path $SITES_PATH
     echo please run "\``which frappe` --serve $SINGLE_SITE_NAME --sites_path `pwd`/$SITES_PATH\`" to start erpnext
+    frappe --use $SINGLE_SITE_NAME --sites_path $SITES_PATH
     deactivate
 fi
 
@@ -73,5 +74,6 @@ then
     fi
 
     python scripts/3to4.py $site
+    frappe --use $SINGLE_SITE_NAME --sites_path $SITES_PATH
     echo please run "`which frappe` --serve $site --sites_path `pwd`/$SITES_PATH" to start erpnext
 fi
