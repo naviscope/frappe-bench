@@ -10,4 +10,6 @@ do
 	cd ..
 done
 
+source ./env/bin/activate
+frappe --latest all --sites_dir sites
 echo "Please restart all processes"
