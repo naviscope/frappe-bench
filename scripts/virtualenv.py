@@ -2338,7 +2338,7 @@ def mach_o_change(path, what, value):
 
 def after_install(options, home_dir):
     home_dir = os.path.abspath(home_dir)
-	subprocess.check_output('/'.join([home_dir, 'bin', 'pip install honcho', shell=True)
+    subprocess.check_output('/'.join([home_dir, 'bin', 'pip install honcho']), shell=True)
     mkdir('sites')
     mkdir('apps')
     with open('standard_apps.json', 'r') as f:
