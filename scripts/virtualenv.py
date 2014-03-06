@@ -2347,7 +2347,7 @@ def after_install(options, home_dir):
     os.chdir('apps')
     # subprocess.check_output('/'.join([home_dir, 'bin', 'pip install --no-index --find-links=../virtualenv_support lxml']), shell=True)
     if not os.path.exists('frappe'):
-        subprocess.check_output('git clone http://github.com/frappe/frappe/', shell=True)
+        subprocess.check_output('git clone http://github.com/frappe/frappe/ --origin upstream', shell=True)
     subprocess.check_output('/'.join([home_dir, 'bin', 'pip install -e frappe/ ']), shell=True)
 
     for app in apps:

@@ -2,12 +2,12 @@
 
 set -e
 
-for $app in src/*
+for app in src/*
 do
 	cd $app
 	echo updating $app
 	git pull --rebase upstream HEAD
-	cd ..
+	cd -
 done
 
 source ./env/bin/activate
