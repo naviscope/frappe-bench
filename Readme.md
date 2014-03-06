@@ -9,7 +9,7 @@ absolute/relative path (eg, `./env/bin/frappe`).
 
 You will need some system packages
 ```
-sudo apt-get install python-dev build-essential python-mysqldb git memcached ntp vim screen htop mysql-server libmysqlclient-dev libxslt1.1 libxslt1-dev
+sudo apt-get install python-dev build-essential python-mysqldb git memcached ntp vim screen htop mysql-server libmysqlclient-dev libxslt1.1 libxslt1-dev redis-server
 ```
 
 #### Usage
@@ -20,18 +20,18 @@ cd frappe-bench
 ./scripts/install.sh single [sitename [dbname]]
 ```
 
+### Development
+```
+./env/bin/honcho start
+```
+
 ### Updating software
 
-Not yet automated but you can run
 ```
-cd src/frappe && git pull && cd -
-cd src/erpnext && git pull && cd -
-cd src/shopping-cart && git pull && cd -
-./env/bin/frappe --latest sitename --sites_path sites
-./env/bin/frappe --build sitename --sites_path sites
+./scripts/update.sh
 ```
 
-### Shortcomings
-Doesn't setup the scheduler yet. You can add `/path/to/env/bin/frappe
---run_scheduler --sites_path /path/to/sites sitename` to crontab. However,
-frappe will soon be using celery for this.
+### Production Deployment
+* Install nginx and supervisor
+* `cp config/nginx.conf /etc/nginx/conf.d/frappe.conf`
+* `cp config/supervisor.conf /etc/supervisor/conf.d/frappe.conf`
