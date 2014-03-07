@@ -20,6 +20,15 @@ cd frappe-bench
 ./scripts/install.sh single [sitename [dbname]]
 ```
 
+#### Migrating from ERPNext version 3
+
+Make sure that you have updated your site for the latest version of 3.x.x and take a database backup.
+```
+git clone https://github.com/frappe/frappe-bench
+cd frappe-bench
+./scripts/install.sh migrate_3_to_4 /path/to/old/erpnext
+```
+
 ### Development
 ```
 ./env/bin/honcho start
