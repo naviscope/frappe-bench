@@ -1,9 +1,9 @@
 [
   {
     "name": "erpnext",
-    "url": "https://github.com/frappe/erpnext"
+    "url": "https://github.com/frappe/erpnext.git"
   },{
     "name": "shopping_cart",
-    "url": "https://github.com/frappe/shopping-cart"
+    "url": "https://github.com/frappe/shopping-cart.git"
   }
 ]
